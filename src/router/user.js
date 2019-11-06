@@ -2,7 +2,7 @@ import Router from 'koa-router'
 
 import UserController from './../controller/user'
 
-let router = new Router()
+const router = new Router()
 
 /**
  * 注册接口

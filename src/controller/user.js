@@ -1,4 +1,4 @@
-import BaseContorller from './BaseContorller'
+import BaseContorller from './Base'
 import UserModel from './../model/user'
 import Jwt from './../util/Jwt'
 
@@ -14,11 +14,11 @@ class User extends BaseContorller {
 
   // 注册
   async signup(ctx) {
-    let data = ctx.request.body
-    let username = data.username
+    let _data = ctx.request.body
+    let _username = data.username
 
     try {
-      let result_find = await UserModel.findOne({username: username}).exec()
+      let result_find = await UserModel.findOne({username: _username}).exec()
 
       if (result_find) {
         ctx.body = {
@@ -26,7 +26,7 @@ class User extends BaseContorller {
           message: '用户名重复'
         }
       } else {
-        const userModel = new UserModel(data)
+        const userModel = new UserModel(_data)
 
         await userModel.save()
 
@@ -45,18 +45,18 @@ class User extends BaseContorller {
 
   // 登录
   async signin(ctx) {
-    let data = ctx.request.body
-    let username = data.username
-    let password = data.password
+    let _data = ctx.request.body
+    let _username = _data.username
+    let _password = _data.password
 
     try {
       let userModel = new UserModel()
-      let result_find = await UserModel.findOne({username: username}).exec()
-      let result_comparePassword = await userModel.comparePassword(password, result_find.password)
+      let result_find = await UserModel.findOne({username: _username}).exec()
+      let result_comparePassword = await userModel.comparePassword(_password, result_find.password)
       let userid = result_find.userid
 
       if (result_find && result_comparePassword) {
-        const jwt = new Jwt(username)
+        const jwt = new Jwt(_username)
         let token = jwt.generateToken()
 
         ctx.body = {
@@ -85,21 +85,21 @@ class User extends BaseContorller {
 
   // 获取登录用户信息接口
   async me(ctx) {
-    let data = ctx.request.body
-    let token = ctx.request.header.token
+    let _data = ctx.request.body
+    let _token = ctx.request.header.token
     // let userid = data.userid
-    let username = data.username
+    let _username = _data.username
 
     try {
       await this.verifyToken(ctx)
 
       // let result_find = await User.findOne({userid: userid}).exec()
-      let result_find = await UserModel.findOne({username: username}).exec()
+      let _result_find = await UserModel.findOne({username: _username}).exec()
 
-      if (result_find) {
+      if (_result_find) {
         let data = {
-          portraitUrl: result_find.portraitUrl,
-          nickname: result_find.nickname
+          portraitUrl: _result_find.portraitUrl,
+          nickname: _result_find.nickname
         }
 
         ctx.body = {

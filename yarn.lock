@@ -981,6 +981,13 @@ commander@^2.8.1:
   resolved "https://registry.npm.taobao.org/commander/download/commander-2.20.3.tgz?cache=0&sync_timestamp=1572603184853&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcommander%2Fdownload%2Fcommander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha1-/UhehMA+tIgcIHIrpIA16FMa6zM=
 
+commander@~1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npm.taobao.org/commander/download/commander-1.1.1.tgz?cache=0&sync_timestamp=1572603184853&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcommander%2Fdownload%2Fcommander-1.1.1.tgz#50d1651868ae60eccff0a2d9f34595376bc6b041"
+  integrity sha1-UNFlGGiuYOzP8KLZ80WVN2vGsEE=
+  dependencies:
+    keypress "0.1.x"
+
 commondir@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/commondir/download/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
@@ -1755,6 +1762,11 @@ keygrip@~1.1.0:
   dependencies:
     tsscmp "1.0.6"
 
+keypress@0.1.x:
+  version "0.1.0"
+  resolved "https://registry.npm.taobao.org/keypress/download/keypress-0.1.0.tgz#4a3188d4291b66b4f65edb99f806aa9ae293592a"
+  integrity sha1-SjGI1CkbZrT2XtuZ+AaqmuKTWSo=
+
 kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
   version "3.2.2"
   resolved "https://registry.npm.taobao.org/kind-of/download/kind-of-3.2.2.tgz#31ea21a734bab9bbb0f32466d893aea51e4a3c64"
@@ -2081,7 +2093,7 @@ nan@2.13.2:
   resolved "https://registry.npm.taobao.org/nan/download/nan-2.13.2.tgz#f51dc7ae66ba7d5d55e1e6d4d8092e802c9aefe7"
   integrity sha1-9R3Hrma6fV1V4ebU2AkugCya7+c=
 
-nan@^2.12.1:
+nan@^2.12.1, nan@^2.14.0:
   version "2.14.0"
   resolved "https://registry.npm.taobao.org/nan/download/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
   integrity sha1-eBj3IgJ7JFmobwKV1DTR/CM2xSw=
@@ -2125,6 +2137,11 @@ node-environment-flags@^1.0.5:
     object.getownpropertydescriptors "^2.0.3"
     semver "^5.7.0"
 
+node-fetch@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.npm.taobao.org/node-fetch/download/node-fetch-2.6.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fnode-fetch%2Fdownload%2Fnode-fetch-2.6.0.tgz#e633456386d4aa55863f676a7ab0daa8fdecb0fd"
+  integrity sha1-5jNFY4bUqlWGP2dqerDaqP3ssP0=
+
 node-modules-regexp@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/node-modules-regexp/download/node-modules-regexp-1.0.0.tgz#8d9dbe28964a4ac5712e9131642107c71e90ec40"
@@ -2152,6 +2169,13 @@ node-releases@^1.1.38:
   integrity sha1-wQEfMDQ6/1tjMVOxD/aR0njQjo0=
   dependencies:
     semver "^6.3.0"
+
+nodejieba@^2.2.1:
+  version "2.3.3"
+  resolved "https://registry.npm.taobao.org/nodejieba/download/nodejieba-2.3.3.tgz#743fc196875b875822e22a299353cac8e0d04777"
+  integrity sha1-dD/Blodbh1gi4iopk1PKyODQR3c=
+  dependencies:
+    nan "^2.14.0"
 
 nopt@^4.0.1:
   version "4.0.1"
@@ -2201,7 +2225,7 @@ number-is-nan@^1.0.0:
   resolved "https://registry.npm.taobao.org/number-is-nan/download/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
 
-object-assign@^4.1.0:
+object-assign@^4.0.1, object-assign@^4.1.0:
   version "4.1.1"
   resolved "https://registry.npm.taobao.org/object-assign/download/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
   integrity sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
@@ -2368,6 +2392,16 @@ pify@^4.0.1:
   version "4.0.1"
   resolved "https://registry.npm.taobao.org/pify/download/pify-4.0.1.tgz#4b2cd25c50d598735c50292224fd8c6df41e3231"
   integrity sha1-SyzSXFDVmHNcUCkiJP2MbfQeMjE=
+
+pinyin@^2.9.0:
+  version "2.9.0"
+  resolved "https://registry.npm.taobao.org/pinyin/download/pinyin-2.9.0.tgz#1e77025bf4fafdad4ea410022837b5f97e53aab1"
+  integrity sha1-HncCW/T6/a1OpBACKDe1+X5TqrE=
+  dependencies:
+    commander "~1.1.1"
+    object-assign "^4.0.1"
+  optionalDependencies:
+    nodejieba "^2.2.1"
 
 pirates@^4.0.0:
   version "4.0.1"
