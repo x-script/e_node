@@ -9,38 +9,42 @@ class Search extends AddressController {
     this.search = this.search.bind(this)
   }
 
+  /**
+   * 
+   * @query {String} city_id, keyword
+   * @return {Object} searchAddress
+   */
   async search(ctx) {
-    let {_city_id, _keyword} = ctx.query
+    let {city_id, keyword} = ctx.query
 
-    if (_keyword === '') {
+    if (keyword === '') {
       ctx.body = {
         code: 9,
         message: '参数错误'
       }
 
       return
-    } else if (isNaN(_city_id)) {
+    } else if (isNaN(city_id)) {
       try {
-        const _city_pinyi = await CitiesController.getCityName(ctx.req)
-        const _city_info = await CityModel.cityGuess(_city_pinyi)
+        const city_name_pinyi = await CitiesController.getCityName(ctx.req)
+        const city_info = await CityModel.cityGuess(city_name_pinyi)
 
-        _city_id = _city_info.id
+        city_id = city_info.id
       } catch (error) {
-        console.log(`搜索地址时，获取定位城失败 ${JSON.stringify(error)}`)
         ctx.body = {
           code: 1,
-          message: `获取数据失败 ${error}`
+          message: '获取数据失败'
         }
       }
     }
 
     try {
-      const _city_info = await CityModel.getCityById(_city_id)
-      const _search_info = await this.searchPath(_city_info.name, _keyword)
-      const searchPath = []
+      const city_info = await CityModel.getCityById(city_id)
+      const search_address_info = await this.searchAddress(city_info.name, keyword)
+      const searchAddress = []
 
-      _search_info.data.forEach((item, index) => {
-        searchPath.push({
+      search_address_info.data.forEach((item, index) => {
+        searchAddress.push({
 					name: item.title,
 					address: item.address,
 					latitude: item.location.lat,
@@ -52,13 +56,12 @@ class Search extends AddressController {
       ctx.body = {
         code: 0,
         message: '',
-        data: searchPath
+        data: searchAddress
       }
     } catch (error) {
-      console.log(`获取地址信息失败 ${JSON.stringify(error)}`)
       ctx.body = {
         code: 1,
-        message: `获取地址信息失败 ${error}`
+        message: '获取地址信息失败'
       }
     }
   }

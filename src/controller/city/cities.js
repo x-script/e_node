@@ -12,18 +12,22 @@ class Cityes extends AddressController {
 
   /**
    * 获取城市信息
-   * @query {String} type: guess-定位城市，hot-热门城市，group-所有城市
+   * @query {String} type guess | hot | group
+	 * 		guess - 定位城市
+	 * 		hot - 热门城市
+	 * 		group - 所有城市
+	 * @return {Object} cityInfo
    */
   async cityes(ctx) {
-    let _type = ctx.query.type
+    let type = ctx.query.type
     let cityInfo = null
 
 		try {
-			switch (_type) {
+			switch (type) {
 				case 'guess':
-          const _city_pinyi = await this.getCityName(ctx.req)
+          const city_name_pinyi = await this.getCityName(ctx.req)
 
-					cityInfo = await CityModel.cityGuess(_city_pinyi)
+					cityInfo = await CityModel.cityGuess(city_name_pinyi)
 					break
 				case 'hot':
 					cityInfo = await CityModel.cityHot()
@@ -45,7 +49,6 @@ class Cityes extends AddressController {
 				data: cityInfo
 			}
 		} catch(error) {
-			console.log(`获取数据失败 ${JSON.stringify(error)}`)
 			ctx.body = {
 				code: 1,
 				message: '获取数据失败'
@@ -53,17 +56,20 @@ class Cityes extends AddressController {
 		}
   }
 
-	// 获取城市名称（拼音）
+	/**
+	 * 获取城市名称（拼音）
+	 * @return {String} cityName 
+	 */
   async getCityName(req) {
 		try {
-			const _position_result = await this.guessPosition(req)
+			const position_info = await this.guessPosition(req)
 			// 汉字转换成拼音
-	    const _pinyin_arr = pinyin(_position_result.city, {
+	    const pinyin_arr = pinyin(position_info.city, {
 		  	style: pinyin.STYLE_NORMAL
 			})
 			let cityName = ''
 
-			_pinyin_arr.forEach(item => {
+			pinyin_arr.forEach(item => {
 				cityName += item[0]
 			})
 

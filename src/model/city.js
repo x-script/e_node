@@ -8,13 +8,13 @@ const citySchema = new Mongoose.Schema({
 // 定位城市信息
 citySchema.statics.cityGuess = function(name) {
 	return new Promise(async (resolve, reject) => {
-    const _toUpperCase_alphabet = name.substr(0, 1).toUpperCase()
+    const toUpperCase_alphabet = name.substr(0, 1).toUpperCase()
     
 		try {
-      const _cities_result = await this.findOne()
+      const cities_data = await this.findOne()
       
-			Object.entries(_cities_result.data).forEach(item => {
-				if (item[0] === _toUpperCase_alphabet) {
+			Object.entries(cities_data.data).forEach(item => {
+				if (item[0] === toUpperCase_alphabet) {
 					item[1].forEach(cityItem => {
 						if (cityItem.pinyin === name) {
 							resolve(cityItem)
@@ -23,7 +23,6 @@ citySchema.statics.cityGuess = function(name) {
 				}
 			})
 		} catch (error) {
-			console.log(`查找数据失败 ${JSON.stringify(error)}`)
 			reject(`查找数据失败 ${JSON.stringify(error)}`)
 		}
 	})
@@ -33,11 +32,10 @@ citySchema.statics.cityGuess = function(name) {
 citySchema.statics.cityHot = function() {
 	return new Promise(async (resolve, reject) => {
 		try {
-      const _cities_result = await this.findOne()
+      const cities_data = await this.findOne()
       
-			resolve(_cities_result.data.hotCities)
+			resolve(cities_data.data.hotCities)
 		} catch (error) {
-			console.log(`查找数据失败 ${JSON.stringify(error)}`)
 			reject(`查找数据失败 ${JSON.stringify(error)}`)
 		}
 	})
@@ -47,13 +45,12 @@ citySchema.statics.cityHot = function() {
 citySchema.statics.cityGroup = function() {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const _cities_result = await this.findOne()
-			let citiesGroup = _cities_result.data
+			const cities_data = await this.findOne()
+			let citiesGroup = cities_data.data
 
 			delete(citiesGroup.hotCities)
 			resolve(citiesGroup)
 		} catch (error) {
-			console.log(`查找数据失败 ${JSON.stringify(error)}`)
 			reject(`查找数据失败 ${JSON.stringify(error)}`)
 		}
 	})
@@ -65,9 +62,9 @@ citySchema.statics.cityGroup = function() {
 citySchema.statics.getCityById = function(city_id) {
 	return new Promise(async (resolve, reject) => {
 		try {
-			let _cities_result = await this.findOne()
+			let cities_data = await this.findOne()
 
-			Object.entries(_cities_result.data).forEach(item => {
+			Object.entries(cities_data.data).forEach(item => {
 				if (item[0] !== '_id' && item[0] !== 'hotCities') {
 					item[1].forEach(cityItem => {
 						if (cityItem.id === +city_id) {
@@ -77,7 +74,6 @@ citySchema.statics.getCityById = function(city_id) {
 				}
 			})
 		} catch (error) {
-			console.log(`查找数据失败 ${JSON.stringify(error)}`)
 			reject(`查找数据失败 ${JSON.stringify(error)}`)
 		}
 	})

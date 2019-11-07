@@ -54,8 +54,7 @@ export default class BaseController {
 				return await data_result.json();
       }
     } catch (error) {
-      console.log('fetch获取数据失败', error);
-			throw new Error(error)
+			throw new Error('fetch获取数据失败')
     }
   }
 }

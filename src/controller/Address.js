@@ -14,94 +14,90 @@ export default class AddressController extends BaseController {
 	async guessPosition(req) {
     const DEFAULT_IP = '180.158.102.141'
     const POSITION_URL = 'https://apis.map.qq.com/ws/location/v1/ip'
-    let _ip = ''
-    let _ip_arr = []
-    let _position_result = ''
+    let ip = ''
+    let ip_arr = []
+    let position_info = ''
 
     if (process.env.NODE_ENV === 'development') ip = DEFAULT_IP
 
     try {
-      _ip = req.headers['x-forwarded-for'] 
+      ip = req.headers['x-forwarded-for'] 
         || req.connection.remoteAddress 
         || req.socket.remoteAddress 
         || req.connection.socket.remoteAddress
 
-      _ip_arr = _ip.split(':')
+      ip_arr = ip.split(':')
         
-      _ip = _ip_arr[_ip_arr.length -1] || DEFAULT_IP
+      ip = ip_arr[ip_arr.length -1] || DEFAULT_IP
     } catch (error) {
-      _ip = DEFAULT_IP
+      ip = DEFAULT_IP
     }
     
-    _ip = DEFAULT_IP
+    ip = DEFAULT_IP
     try {
-      _position_result = await this.fetch(POSITION_URL, {
-        ip: _ip,
+      position_info = await this.fetch(POSITION_URL, {
+        ip,
         key: this.tencentkey1
       })
 
-      if (_position_result.status !== 0) {
-        _position_result = await this.fetch(POSITION_URL, {
-          ip: _ip,
+      if (position_info.status !== 0) {
+        position_info = await this.fetch(POSITION_URL, {
+          ip,
           key: this.tencentkey2
         })
       }
 
-      if (_position_result.status !== 0) {
-        _position_result = await this.fetch(POSITION_URL, {
-          ip: _ip,
+      if (position_info.status !== 0) {
+        position_info = await this.fetch(POSITION_URL, {
+          ip,
           key: this.tencentkey3
         })
       }
 
-      if (_position_result.status !== 0) {
-        _position_result = await this.fetch(POSITION_URL, {
-          ip: _ip,
+      if (position_info.status !== 0) {
+        position_info = await this.fetch(POSITION_URL, {
+          ip,
           key: this.tencentkey4
         })
       }
 
-      if (_position_result.status === 0) {
+      if (position_info.status === 0) {
         let cityInfo = {
-          lat: _position_result.result.location.lat,
-          lng: _position_result.result.location.lng,
-          city: _position_result.result.ad_info.city
+          lat: position_info.result.location.lat,
+          lng: position_info.result.location.lng,
+          city: position_info.result.ad_info.city
         }
 
         cityInfo.city = cityInfo.city.replace(/市$/, '')
 
         return cityInfo
       } else {
-        console.log(`定位失败 ${JSON.stringify(_position_result)}`)
-        throw new Error(`定位失败 ${JSON.stringify(_position_result)}`)
+        throw new Error(`定位失败 ${JSON.stringify(position_info)}`)
       }
     } catch (error) {
-      console.log(`定位失败 ${JSON.stringify(error)}`)
       throw new Error(`定位失败 ${JSON.stringify(error)}`)
     }
   }
   
   // 搜索地址
-  async searchPath(cityName, keyword) {
+  async searchAddress(cityName, keyword) {
     const SEARCH_PATH = 'https://apis.map.qq.com/ws/place/v1/search'
     const PAGE_SIZE = 10
 
     try {
-      let searchResult = await this.fetch(SEARCH_PATH, {
+      let search_info = await this.fetch(SEARCH_PATH, {
         key: this.tencentkey1,
         keyword: encodeURIComponent(keyword),
         boundary: 'region(' + encodeURIComponent(cityName) + ',0)',
         page_size: PAGE_SIZE
       })
       
-      if (searchResult.status !== 0) {
-        console.log(`搜索位置信息失败 ${JSON.stringify(searchResult)}`)
-        throw new Error(`搜索位置信息失败 ${JSON.stringify(searchResult)}`)
+      if (search_info.status !== 0) {
+        throw new Error(`搜索位置信息失败 ${JSON.stringify(search_info)}`)
       }
 
-      return searchResult
+      return search_info
     } catch (error) {
-      console.log(`搜索位置信息失败 ${JSON.stringify(error)}`)
       throw new Error(`搜索位置信息失败 ${JSON.stringify(error)}`)
     }
   }
