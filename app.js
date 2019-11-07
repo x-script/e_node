@@ -2,7 +2,7 @@ import Koa from 'koa'
 import koaBodyParser from 'koa-bodyparser'
 import koaRouter from 'koa-router'
 
-import connect from './src/model'
+import connect from './src/mongodb'
 import routers from './src/router'
 
 const app = new Koa()
