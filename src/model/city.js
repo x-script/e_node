@@ -56,8 +56,6 @@ citySchema.statics.cityGroup = function() {
 	})
 }
 
-
-
 // 获取城市信息
 citySchema.statics.getCityById = function(city_id) {
 	return new Promise(async (resolve, reject) => {
