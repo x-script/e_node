@@ -7,7 +7,8 @@ export default class AddressController extends BaseController {
     this.tencentkey1 = 'RLHBZ-WMPRP-Q3JDS-V2IQA-JNRFH-EJBHL'
 		this.tencentkey2 = 'RRXBZ-WC6KF-ZQSJT-N2QU7-T5QIT-6KF5X'
 		this.tencentkey3 = 'OHTBZ-7IFRG-JG2QF-IHFUK-XTTK6-VXFBN'
-		this.tencentkey4 = 'Z2BBZ-QBSKJ-DFUFG-FDGT3-4JRYV-JKF5O'
+    this.tencentkey4 = 'Z2BBZ-QBSKJ-DFUFG-FDGT3-4JRYV-JKF5O'
+    this.baidukey = 'fjke3YUipM9N64GdOIh1DNeK2APO2WcT'
   }
 
   //获取定位地址
@@ -99,6 +100,43 @@ export default class AddressController extends BaseController {
       return search_info
     } catch (error) {
       throw new Error(`搜索位置信息失败 ${JSON.stringify(error)}`)
+    }
+  }
+
+  // 测距
+  async getDistance(origin, destination) {
+    const DISTANCE_URL = 'http://api.map.baidu.com/routematrix/v2/driving'
+    let result = []
+    let second = 0
+    let order_duration_time = 0
+
+    try {
+      let distances_data = await this.fetch(DISTANCE_URL, {
+        ak: this.baidukey,
+        output: 'json',
+        origins: origin,
+        destinations: destination,
+      })
+
+      if (distances_data.status !== 0) throw new Error(`调用百度地图测距失败 ${JSON.stringify(distances_data.message)}`)
+
+      distances_data.result.forEach(item => {
+        second = +item.duration.value + 1800
+        order_duration_time = Math.ceil(second%3600 / 60) + '分钟'
+
+        if (Math.floor(second / 3600)) {
+          order_duration_time = Math.floor(second / 3600) + '小时' + order_duration_time
+        }
+        
+        result.push({
+          distance: item.distance.text,
+          order_duration_time
+        })
+      })
+
+      return result
+    } catch (error) {
+      throw new Error(`测距请求上限 ${JSON.stringify(error)}`)
     }
   }
 }
